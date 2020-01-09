@@ -36,10 +36,14 @@ pred addBranch_v2(p, p': Project, newBr, baseBr: Branch) {
     p'.br = p.br + (newBr -> baseBr.(p.br))
 }
 
+assert sameCommit {
+    all p, p': Project,  newBr, baseBr: Branch |
+        addBranch [p, p', newBr, baseBr] => baseBr.(p'.br) = newBr.(p'.br)
+}
 
 assert addBranch {
     all p, p': Project,  newBr, baseBr: Branch |
     addBranch [p, p', newBr, baseBr] <=> addBranch_v2 [p, p', newBr, baseBr]
 }
 
-check addBranch
+check sameCommit
